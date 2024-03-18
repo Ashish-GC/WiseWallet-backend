@@ -4,6 +4,7 @@ import JWT from "../helpers/jwt.js";
 const authenticator = (req, res, next) => {
   // Get the token from the request headers
   let token = req.headers.authorization;
+  console.log("here", req.headers);
 
   // Check if token exists
   if (!token) {

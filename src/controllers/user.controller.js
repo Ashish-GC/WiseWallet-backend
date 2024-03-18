@@ -15,7 +15,10 @@ class UserController {
       if (user) {
         return res.status(400).json({ message: "User already exists" });
       }
-
+      const otpUser = await OTPModel.findOne({ email });
+      if (otpUser) {
+        await OTPModel.findByIdAndDelete(otpUser._id);
+      }
       const otp = Math.floor(100000 + Math.random() * 900000);
       await sendEmail(email, otp);
       const hashedOTP = await hashPassword(otp.toString());
@@ -81,7 +84,10 @@ class UserController {
       if (!user) {
         return res.status(400).json({ message: "User not found" });
       }
-
+      const otpUser = await OTPModel.findOne({ email });
+      if (otpUser) {
+        await OTPModel.findByIdAndDelete(otpUser._id);
+      }
       const otp = Math.floor(100000 + Math.random() * 900000);
       await sendEmail(email, otp);
       const hashedOTP = await hashPassword(otp.toString());

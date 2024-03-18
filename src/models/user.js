@@ -13,18 +13,10 @@ const UserSchema = new mongoose.Schema({
   mobileNo: {
     type: String,
     required: true,
-    unique: true,
   },
   profileImage: {
     type: String,
   },
-  // otp: {
-  //   type: String,
-  // },
-  // isVerified: {
-  //   type: Boolean,
-  //   default: false,
-  // },
 });
 
 const UserModel = mongoose.model("User", UserSchema);
