@@ -158,6 +158,30 @@ class UserController {
       res.status(500).json({ message: "Internal server error" });
     }
   };
+
+  updateProfile = async (req, res) => {
+    try {
+      const user = await UserModel.findById(req.user.id);
+      if (!user) {
+        return res.status(400).json({ message: "User not found" });
+      }
+      const { name, mobileNo, profileImage } = req.body;
+      if (!(name || mobileNo || profileImage)) {
+        return res
+          .status(400)
+          .json({ message: "Name and mobileNo are required" });
+      }
+      const updatedUser = await UserModel.findByIdAndUpdate(
+        req.user.id,
+        { name, mobileNo, profileImage },
+        { new: true },
+      );
+      return res.status(200).json({ updatedUser });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
 }
 
 export default UserController;
