@@ -13,12 +13,17 @@ const TransactionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  account: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     required: true,
   },
-  description: {
+   name: {
     type: String,
+    required:true,
   },
 });
 
