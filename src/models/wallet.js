@@ -18,6 +18,9 @@ const WalletSchema = new mongoose.Schema({
   walletCategory: {
     type: String,
   },
+  bankName:{
+    type:String,
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
