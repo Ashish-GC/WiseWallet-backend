@@ -5,10 +5,6 @@ const GoalSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  account: {
-    type: String,
-    required: true,
-  },
   goalName: {
     type: String,
     required: true,
@@ -20,7 +16,7 @@ const GoalSchema = new mongoose.Schema({
   endDate: {
     type: Date,
     required: true,
-  }
+  },
 });
 
 const GoalModel = mongoose.model("Goal", GoalSchema);

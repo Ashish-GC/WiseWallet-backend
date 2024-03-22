@@ -11,4 +11,6 @@ router.post(
   transaction.createTransaction,
 );
 
+router.get("/get-transactions", authenticator, transaction.getTransactions);
+
 export { router as transactionRouter };

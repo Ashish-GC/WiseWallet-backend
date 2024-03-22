@@ -5,14 +5,18 @@ const WalletSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  name: {
+  type: {
     type: String,
+    required: true,
   },
   cardNumber: {
     type: String,
   },
   expiryDate: {
     type: Date,
+  },
+  walletCategory: {
+    type: String,
   },
 });
 

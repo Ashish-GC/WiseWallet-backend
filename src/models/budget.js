@@ -5,10 +5,6 @@ const BudgetSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  account: {
-    type: String,
-    required: true,
-  },
   budgetName: {
     type: String,
     required: true,
@@ -20,7 +16,7 @@ const BudgetSchema = new mongoose.Schema({
   endDate: {
     type: Date,
     required: true,
-  }
+  },
 });
 
 const BudgetModel = mongoose.model("Budget", BudgetSchema);
