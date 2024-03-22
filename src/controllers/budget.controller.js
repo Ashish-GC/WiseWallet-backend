@@ -4,6 +4,7 @@ class BudgetController {
   createBudget = async (req, res) => {
     try {
       const { amount, budgetName, startDate, endDate } = req.body;
+      const userId = req.user.id;
       if (!amount || !budgetName || !startDate || !endDate) {
         return res.status(400).json({
           message:
@@ -15,6 +16,7 @@ class BudgetController {
         budgetName,
         startDate,
         endDate,
+        userId,
       });
       return res.status(200).json({ response, message: "Budget created" });
     } catch (error) {
@@ -25,7 +27,8 @@ class BudgetController {
 
   getBudgets = async (req, res) => {
     try {
-      const budgets = await BudgetModel.find();
+      const userId = req.user.id;
+      const budgets = await BudgetModel.find({ userId });
       return res.status(200).json({ budgets });
     } catch (error) {
       console.log(error);

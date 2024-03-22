@@ -3,6 +3,7 @@ import WalletModel from "../models/wallet.js";
 class WalletController {
   createWallet = async (req, res) => {
     try {
+      const userId = req.user.id;
       const { amount, type, cardNumber, expiryDate, walletCategory } = req.body;
       if (!amount || !type) {
         return res.status(400).json({
@@ -26,6 +27,7 @@ class WalletController {
         cardNumber,
         expiryDate,
         walletCategory,
+        userId,
       });
       return res.status(200).json({ response, message: "Wallet created" });
     } catch (error) {
@@ -36,7 +38,8 @@ class WalletController {
 
   getWallets = async (req, res) => {
     try {
-      const wallets = await WalletModel.find();
+      const userId = req.user.id;
+      const wallets = await WalletModel.find({ userId });
       return res.status(200).json({ wallets });
     } catch (error) {
       console.log(error);

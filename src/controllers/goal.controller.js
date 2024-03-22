@@ -4,6 +4,7 @@ class GoalController {
   createGoal = async (req, res) => {
     try {
       const { amount, goalName, startDate, endDate } = req.body;
+      const userId = req.user.id;
       if (!amount || !goalName || !startDate || !endDate) {
         return res.status(400).json({
           message:
@@ -15,6 +16,7 @@ class GoalController {
         goalName,
         startDate,
         endDate,
+        userId,
       });
       return res.status(200).json({ response, message: "Goal created" });
     } catch (error) {
@@ -25,7 +27,8 @@ class GoalController {
 
   getGoals = async (req, res) => {
     try {
-      const goals = await GoalModel.find();
+      const userId = req.user.id;
+      const goals = await GoalModel.find({ userId });
       return res.status(200).json({ goals });
     } catch (error) {
       console.log(error);

@@ -4,6 +4,7 @@ class TransactionController {
   createTransaction = async (req, res) => {
     try {
       const { amount, type, category, date, name, account } = req.body;
+      const userId = req.user.id;
       if (!amount || !type || !category || !date || !name || !account) {
         return res.status(400).json({
           message:
@@ -17,6 +18,7 @@ class TransactionController {
         date,
         account,
         name,
+        userId,
       });
       return res.status(200).json({ response, message: "Transaction created" });
     } catch (error) {
@@ -27,7 +29,8 @@ class TransactionController {
 
   getTransactions = async (req, res) => {
     try {
-      const transactions = await TransactionModel.find();
+      const userId = req.user.id;
+      const transactions = await TransactionModel.find({ userId });
       return res.status(200).json({ transactions });
     } catch (error) {
       console.log(error);
