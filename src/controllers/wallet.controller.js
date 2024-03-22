@@ -4,13 +4,13 @@ class WalletController {
   createWallet = async (req, res) => {
     try {
       const userId = req.user.id;
-      const { amount, type, cardNumber, expiryDate, walletCategory } = req.body;
+      const { amount, type, cardNumber, expiryDate, walletCategory,bankName } = req.body;
       if (!amount || !type) {
         return res.status(400).json({
           message: "Please provide all the required fields: amount, type",
         });
       }
-      if (type == "card" && (!cardNumber || !expiryDate)) {
+      if (type == "card" && (!cardNumber || !expiryDate || !bankName)) {
         return res.status(400).json({
           message:
             "Please provide all the required fields: cardNumber, expiryDate",
@@ -28,6 +28,7 @@ class WalletController {
         expiryDate,
         walletCategory,
         userId,
+        bankName
       });
       return res.status(200).json({ response, message: "Wallet created" });
     } catch (error) {
