@@ -39,11 +39,12 @@ class UserController {
 
   verifySignUp = async (req, res) => {
     try {
-      const { name, email, mobileNo, otp } = req.body;
-      if (!email || !otp || !name || !mobileNo) {
+      const { name, email, mobileNo, otp ,address} = req.body;
+      console.log(address);
+      if (!email || !otp || !name || !mobileNo || !address) {
         return res.status(400).json({
           message:
-            "Please provide all the required fields: email, otp, name, and mobileNo",
+            "Please provide all the required fields: email, otp, name, mobileNo and address",
         });
       }
       const otpDetails = await OTPModel.findOne({ email });
@@ -58,11 +59,11 @@ class UserController {
       await OTPModel.findByIdAndDelete(otpDetails._id);
 
       //create user
-      const user = await UserModel.create({ name, email, mobileNo });
+      const user = await UserModel.create({ name, email, mobileNo,address });
 
       //create token
       const token = JWT.generateToken(
-        { id: user._id, email, mobileNo, name },
+        { id: user._id, email, mobileNo, name,address },
         "14d",
       );
 
@@ -165,15 +166,15 @@ class UserController {
       if (!user) {
         return res.status(400).json({ message: "User not found" });
       }
-      const { name, mobileNo, profileImage } = req.body;
-      if (!(name || mobileNo || profileImage)) {
+      const { name, mobileNo, profileImage,address } = req.body;
+      if (!(name || mobileNo || profileImage || address)) {
         return res
           .status(400)
           .json({ message: "Name and mobileNo are required" });
       }
       const updatedUser = await UserModel.findByIdAndUpdate(
         req.user.id,
-        { name, mobileNo, profileImage },
+        { name, mobileNo, profileImage ,address},
         { new: true },
       );
       return res.status(200).json({ updatedUser });
