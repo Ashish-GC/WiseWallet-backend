@@ -1,4 +1,5 @@
 import TransactionModel from "../models/transaction.js";
+import BudgetModel from "../models/budget.js";
 
 class TransactionController {
   createTransaction = async (req, res) => {
@@ -10,6 +11,14 @@ class TransactionController {
           message:
             "Please provide all the required fields: amount, type, category, name, account and date",
         });
+      }
+      if (type == "Expense") {
+        const budget = await BudgetModel.findOne({ userId, category });
+        if (budget) {
+          budget.moneySpent += amount;
+          await budget.save();
+          // return res.status(400).json({ message: "Budget not found" });
+        }
       }
       const response = await TransactionModel.create({
         amount,
