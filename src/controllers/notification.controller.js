@@ -1,15 +1,16 @@
-import NotificationModel from "../models/notification";
+import NotificationModel from "../models/notification.js";
 
 class NotificationController {
   createProductNotification = async (req, res) => {
     try {
-      const { message, userId, productName } = req.body;
-      if (!message || !userId || !productName) {
+      const { message, productName } = req.body;
+      if (!message || !productName) {
         return res.status(400).json({
           message:
             "Please provide all the required fields: message, userId, productName",
         });
       }
+      const userId = req.user.id;
       const response = await NotificationModel.create({
         message,
         userId,

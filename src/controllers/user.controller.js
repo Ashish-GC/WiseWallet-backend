@@ -1,6 +1,6 @@
 import UserModel from "../models/user.js";
 import OTPModel from "../models/otp.js";
-import sendEmail from "../helpers/email.js";
+import { sendEmail } from "../helpers/email.js";
 import { hashPassword, comparePassword } from "../helpers/bcrypt.js";
 import JWT from "../helpers/jwt.js";
 
@@ -39,7 +39,7 @@ class UserController {
 
   verifySignUp = async (req, res) => {
     try {
-      const { name, email, mobileNo, otp ,address} = req.body;
+      const { name, email, mobileNo, otp, address } = req.body;
       console.log(address);
       if (!email || !otp || !name || !mobileNo || !address) {
         return res.status(400).json({
@@ -59,11 +59,11 @@ class UserController {
       await OTPModel.findByIdAndDelete(otpDetails._id);
 
       //create user
-      const user = await UserModel.create({ name, email, mobileNo,address });
+      const user = await UserModel.create({ name, email, mobileNo, address });
 
       //create token
       const token = JWT.generateToken(
-        { id: user._id, email, mobileNo, name,address },
+        { id: user._id, email, mobileNo, name, address },
         "14d",
       );
 
@@ -166,7 +166,7 @@ class UserController {
       if (!user) {
         return res.status(400).json({ message: "User not found" });
       }
-      const { name, mobileNo, profileImage,address } = req.body;
+      const { name, mobileNo, profileImage, address } = req.body;
       if (!(name || mobileNo || profileImage || address)) {
         return res
           .status(400)
@@ -174,7 +174,7 @@ class UserController {
       }
       const updatedUser = await UserModel.findByIdAndUpdate(
         req.user.id,
-        { name, mobileNo, profileImage ,address},
+        { name, mobileNo, profileImage, address },
         { new: true },
       );
       return res.status(200).json({ updatedUser });

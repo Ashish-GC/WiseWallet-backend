@@ -1,4 +1,7 @@
 import ProductModel from "../models/product.js";
+import NotificationModel from "../models/notification.js";
+import UserModel from "../models/user.js";
+import { sendNotificationEmail } from "../helpers/email.js";
 
 class ProductController {
   createProduct = async (req, res) => {
@@ -30,9 +33,15 @@ class ProductController {
         owner: userId,
       });
 
-      // const user = await UserModel.findById(userId);
-      // user.products.push(response._id);
-      // await user.save();
+      const notifications = await NotificationModel.find({ productName });
+      if (notifications.length > 0) {
+        notifications.forEach(async (notification) => {
+          console.log("Sending notification to user: ", notification.userId);
+          const user = await UserModel.findById(notification.userId);
+          await sendNotificationEmail(user.email, productName);
+          await NotificationModel.findByIdAndDelete(notification._id);
+        });
+      }
 
       return res.status(200).json({ response, message: "Product created" });
     } catch (err) {
