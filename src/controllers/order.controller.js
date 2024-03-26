@@ -63,7 +63,8 @@ class OrderController {
     try {
       const userId = req.user.id;
       const orders = await OrderModel.find({ buyer: userId });
-      return res.status(200).json({ orders });
+      const productDetails = await ProductModel.findById(orders.product);
+      return res.status(200).json({ orders, productDetails });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Internal server error" });
