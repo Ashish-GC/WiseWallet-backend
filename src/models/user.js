@@ -17,10 +17,10 @@ const UserSchema = new mongoose.Schema({
   profileImage: {
     type: String,
   },
-  address:{
-    type:String,
-    required:true
-  }
+  address: {
+    type: String,
+    required: true,
+  },
 });
 
 const UserModel = mongoose.model("User", UserSchema);

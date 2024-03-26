@@ -1,48 +1,65 @@
 import ProductModel from "../models/product.js";
 
-class ProductController{
-      createProduct= async(req,res)=>{
-           try{   
-           const {name,studentId,productName,productImage,category,price} = req.body;
-           const userId = req.user.id;
+class ProductController {
+  createProduct = async (req, res) => {
+    try {
+      const {
+        productName,
+        productImage,
+        category,
+        price,
+        productDescription,
+        productCondition,
+      } = req.body;
+      const userId = req.user.id;
 
-        if(!name || !studentId || !productName || !productImage || !category || !price)
-              {
-                return res.status(400).json({
-                    message:
-                      "Please provide all the required fields",
-                  });
-              }
-
-         const response = await ProductModel.create({
-             name,
-             studentId,
-             productName,
-             productImage,
-             category,
-             price,
-             userId
-         });
-
-         return res.status(200).json({ response, message: "Product created" });
-        }
-        catch(err){
-            console.log(err);
-             res.status(500).json({ message: "Internal server error" });
-        }
-
+      if (!productName || !productImage || !category || !price) {
+        return res.status(400).json({
+          message:
+            "Please provide all the required fields: productName, productImage, category, price",
+        });
       }
 
-      getProducts=async(req,res)=>{
-              try{
-                const products = await ProductModel.find();
-                return res.status(200).json({ products });
-              }  
-              catch(err){
-                console.log(err);
-                res.status(500).json({ message: "Internal server error" });
-              } 
-        
-      }
+      const response = await ProductModel.create({
+        productName,
+        productImage,
+        category,
+        price,
+        productDescription,
+        productCondition,
+        owner: userId,
+      });
+
+      // const user = await UserModel.findById(userId);
+      // user.products.push(response._id);
+      // await user.save();
+
+      return res.status(200).json({ response, message: "Product created" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+
+  getProducts = async (req, res) => {
+    try {
+      const products = await ProductModel.find();
+      return res.status(200).json({ products });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+
+  getProductsByUser = async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const products = await ProductModel.find({ owner: userId });
+      return res.status(200).json({ products });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
 }
 export default ProductController;
