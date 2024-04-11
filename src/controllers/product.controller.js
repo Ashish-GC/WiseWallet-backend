@@ -59,14 +59,21 @@ class ProductController {
   getProducts = async (req, res) => {
     try {
       // Extracting query parameters
-      const { courseName, semester, programName, sortBy, priceRange } =
-        req.query;
+      const {
+        category,
+        courseName,
+        semester,
+        programName,
+        sortBy,
+        priceRange,
+      } = req.query;
 
       // Constructing filter object based on provided parameters
       const filter = {};
       if (courseName) filter.courseName = courseName;
       if (semester) filter.semester = semester;
       if (programName) filter.programName = programName;
+      if (category) filter.category = category;
 
       // Constructing price filter based on provided priceRange
       if (priceRange) {
