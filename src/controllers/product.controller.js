@@ -15,7 +15,7 @@ class ProductController {
         productCondition,
         programName,
         courseName,
-        semester
+        semester,
       } = req.body;
       const userId = req.user.id;
 
@@ -36,7 +36,7 @@ class ProductController {
         owner: userId,
         programName,
         courseName,
-        semester
+        semester,
       });
       // console.log(response);
       const notifications = await NotificationModel.find({ productName });
@@ -58,7 +58,50 @@ class ProductController {
 
   getProducts = async (req, res) => {
     try {
-      const products = await ProductModel.find();
+      // Extracting query parameters
+      const { courseName, semester, programName, sortBy, priceRange } =
+        req.query;
+
+      // Constructing filter object based on provided parameters
+      const filter = {};
+      if (courseName) filter.courseName = courseName;
+      if (semester) filter.semester = semester;
+      if (programName) filter.programName = programName;
+
+      // Constructing price filter based on provided priceRange
+      if (priceRange) {
+        switch (priceRange) {
+          case "500AndBelow":
+            filter.price = { $lte: 500 };
+            break;
+          case "501To1000":
+            filter.price = { $gte: 501, $lte: 1000 };
+            break;
+          case "1001To5000":
+            filter.price = { $gte: 1001, $lte: 5000 };
+            break;
+          case "5001AndAbove":
+            filter.price = { $gte: 5001 };
+            break;
+          default:
+            // Handle invalid priceRange value
+            break;
+        }
+      }
+
+      // Constructing sort object based on provided sort option
+      let sortOption = {};
+      if (sortBy === "priceLowToHigh") {
+        sortOption = { price: 1 };
+      } else if (sortBy === "priceHighToLow") {
+        sortOption = { price: -1 };
+      } else if (sortBy === "newest") {
+        sortOption = { createdAt: -1 };
+      }
+
+      // Finding products based on filters, sorting, and price range
+      const products = await ProductModel.find(filter).sort(sortOption);
+
       return res.status(200).json({ products });
     } catch (err) {
       console.log(err);
