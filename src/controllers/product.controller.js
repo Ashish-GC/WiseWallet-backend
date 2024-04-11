@@ -13,6 +13,9 @@ class ProductController {
         price,
         productDescription,
         productCondition,
+        programName,
+        courseName,
+        semester
       } = req.body;
       const userId = req.user.id;
 
@@ -31,8 +34,11 @@ class ProductController {
         productDescription,
         productCondition,
         owner: userId,
+        programName,
+        courseName,
+        semester
       });
-
+      // console.log(response);
       const notifications = await NotificationModel.find({ productName });
       if (notifications.length > 0) {
         notifications.forEach(async (notification) => {
