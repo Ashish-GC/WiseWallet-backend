@@ -66,14 +66,20 @@ class ProductController {
         programName,
         sortBy,
         priceRange,
+        exclude
       } = req.query;
 
       // Constructing filter object based on provided parameters
       const filter = {};
+     
       if (courseName) filter.courseName = courseName;
       if (semester) filter.semester = semester;
       if (programName) filter.programName = programName;
       if (category) filter.category = category;
+      if (exclude==='exclude') {
+        filter.isSold = false;}
+       
+    
 
       // Constructing price filter based on provided priceRange
       if (priceRange) {
@@ -108,7 +114,6 @@ class ProductController {
 
       // Finding products based on filters, sorting, and price range
       const products = await ProductModel.find(filter).sort(sortOption);
-
       return res.status(200).json({ products });
     } catch (err) {
       console.log(err);
