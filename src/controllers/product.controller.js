@@ -141,5 +141,19 @@ class ProductController {
   //     res.status(500).json({ message: "Internal server error" });
   //   }
   // };
+
+  deleteProductById = async(req,res)=>{
+    try{
+       const productId=req.params.id ;
+
+       const product = await ProductModel.findByIdAndDelete(productId) ;
+
+         return res.status(200).json({message:"product deleted"});
+    }
+    catch(err){
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
 }
 export default ProductController;
