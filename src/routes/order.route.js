@@ -11,6 +11,8 @@ router.get("/get-orders-by-buyer", authenticator, order.getOrdersByBuyer);
 
 router.get("/get-orders", authenticator, order.getOrders);
 
+router.put("/complete-order/:id", authenticator, order.completeOrder);
+
 router.delete("/delete-order/:id", authenticator, order.deleteOrder);
 
 export { router as orderRouter };

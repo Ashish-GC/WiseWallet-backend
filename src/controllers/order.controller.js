@@ -81,6 +81,23 @@ class OrderController {
     }
   };
 
+  completeOrder = async (req, res) => {
+    try {
+      const orderId = req.params.id;
+      const order = await OrderModel.findById(orderId);
+      if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+      order.orderStatus = "completed";
+      order.completeDate = Date.now();
+      await order.save();
+      return res.status(200).json({ message: "Order completed" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };
+
   deleteOrder = async (req, res) => {
     try {
       const orderId = req.params.id;
@@ -88,6 +105,8 @@ class OrderController {
       if (!order) {
         return res.status(404).json({ message: "Order not found" });
       }
+      const product = await ProductModel.findById(order.product);
+      product.isSold = false;
       await order.deleteOne();
       return res.status(200).json({ message: "Order deleted" });
     } catch (error) {

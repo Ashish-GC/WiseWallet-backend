@@ -27,6 +27,9 @@ const OrderSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  completeDate: {
+    type: Date,
+  },
 });
 
 const OrderModel = mongoose.model("Order", OrderSchema);
