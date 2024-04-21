@@ -8,5 +8,5 @@ const product = new ProductController();
 router.post("/create-product", authenticator, product.createProduct);
 router.get("/get-products", authenticator, product.getProducts);
 router.get("/get-products-by-user", authenticator, product.getProductsByUser);
-
+router.delete("/delete-product/:id" ,authenticator ,product.deleteProductById );
 export { router as productRouter };
