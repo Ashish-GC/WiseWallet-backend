@@ -7,6 +7,7 @@ import { goalRouter } from "./goal.route.js";
 import { productRouter } from "./product.route.js";
 import { notificationRouter } from "./notification.route.js";
 import { orderRouter } from "./order.route.js";
+import { wishlistRouter } from "./wishlist.route.js";
 
 const router = express.Router();
 
@@ -26,5 +27,7 @@ router.use("/product", productRouter);
 router.use("/notification", notificationRouter);
 
 router.use("/order", orderRouter);
+
+router.use("/wishlist",wishlistRouter);
 
 export default router;

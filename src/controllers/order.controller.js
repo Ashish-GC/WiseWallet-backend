@@ -107,6 +107,7 @@ class OrderController {
       }
       const product = await ProductModel.findById(order.product);
       product.isSold = false;
+      await  product.save();
       await order.deleteOne();
       return res.status(200).json({ message: "Order deleted" });
     } catch (error) {
