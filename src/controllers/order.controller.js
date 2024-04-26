@@ -5,6 +5,7 @@ import {
   sendNotificationToSeller,
   sendNotificationToBuyer,
 } from "../helpers/email.js";
+import NotificationController from "./notification.controller.js";
 
 class OrderController {
   createOrder = async (req, res) => {
@@ -51,6 +52,12 @@ class OrderController {
         sellerDetails.email,
         sellerDetails.mobileNo,
       );
+
+           
+  let obj = new NotificationController();
+
+  obj.addNotification(buyerDetails , sellerDetails ,productSchema);
+
 
       return res.status(200).json({ response, message: "Order created" });
     } catch (error) {

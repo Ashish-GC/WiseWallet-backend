@@ -2,6 +2,7 @@ import ProductModel from "../models/product.js";
 import NotificationModel from "../models/notification.js";
 import UserModel from "../models/user.js";
 import { sendNotificationEmail } from "../helpers/email.js";
+import NotificationController from "./notification.controller.js";
 
 class ProductController {
   createProduct = async (req, res) => {
@@ -45,6 +46,10 @@ class ProductController {
           console.log("Sending notification to user: ", notification.userId);
           const user = await UserModel.findById(notification.userId);
           await sendNotificationEmail(user.email, productName);
+          
+           const obj = new NotificationController();
+           obj.addProductNotification(user,productName);
+
           await NotificationModel.findByIdAndDelete(notification._id);
         });
       }
@@ -71,6 +76,7 @@ class ProductController {
 
       // Constructing filter object based on provided parameters
       const filter = {};
+     
      
       if (courseName) filter.courseName = courseName;
       if (semester) filter.semester = semester;
