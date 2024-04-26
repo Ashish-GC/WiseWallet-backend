@@ -1,6 +1,57 @@
 import NotificationModel from "../models/notification.js";
 
 class NotificationController {
+
+  addNotification=async(buyerDetails,sellerDetails,productSchema )=>{
+        
+    try{
+              
+         //add notification for buyer 
+          const buyerMessage = `Here are the contact details of the seller for the product you're interested in: name -> ${sellerDetails.name} , email -> ${sellerDetails.email} , phone -> ${sellerDetails.mobileNo}`;
+          
+          const buyer = await NotificationModel.create({
+            message:buyerMessage,
+            userId:buyerDetails._id,
+            productName:productSchema.productName,
+          });
+
+           
+
+         //add notification for seller
+         const sellerMessage = `Someone is interested in buying your product ${productSchema.productName}. You can contact them using the following details : name -> ${buyerDetails.name} , email -> ${buyerDetails.email} , phone -> ${buyerDetails.mobileNo}`;
+
+         const seller = await NotificationModel.create({
+          message:sellerMessage,
+          userId:sellerDetails._id,
+          productName:productSchema.productName,
+        });
+    }
+    catch(err){
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+
+  }
+
+  addProductNotification = async(user,productName)=>{
+    try{
+              
+      //add notification for buyer 
+       const message = `The product ${productName} is now available`;
+       
+      await NotificationModel.create({
+         message,
+         userId:user._id,
+         productName,
+       });
+ }
+ catch(err){
+   console.log(err);
+   res.status(500).json({ message: "Internal server error" });
+ }
+
+  }
+
   createProductNotification = async (req, res) => {
     try {
       const { message, productName } = req.body;
