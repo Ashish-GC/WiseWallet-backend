@@ -36,15 +36,18 @@ const ProductSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  programName:{
-    type:String
+  validityDate: {
+    type: Date,
   },
-   courseName:{
-    type:String
-   },
-   semester:{
-    type:String
-   },
+  programName: {
+    type: String,
+  },
+  courseName: {
+    type: String,
+  },
+  semester: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

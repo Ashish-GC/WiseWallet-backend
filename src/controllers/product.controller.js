@@ -17,6 +17,7 @@ class ProductController {
         programName,
         courseName,
         semester,
+        validityDate,
       } = req.body;
       const userId = req.user.id;
 
@@ -38,6 +39,7 @@ class ProductController {
         programName,
         courseName,
         semester,
+        validityDate,
       });
       // console.log(response);
       const notifications = await NotificationModel.find({ productName });
@@ -46,9 +48,9 @@ class ProductController {
           console.log("Sending notification to user: ", notification.userId);
           const user = await UserModel.findById(notification.userId);
           await sendNotificationEmail(user.email, productName);
-          
-           const obj = new NotificationController();
-           obj.addProductNotification(user,productName);
+
+          //  const obj = new NotificationController();
+          //  obj.addProductNotification(user,productName);
 
           await NotificationModel.findByIdAndDelete(notification._id);
         });
@@ -71,21 +73,19 @@ class ProductController {
         programName,
         sortBy,
         priceRange,
-        exclude
+        exclude,
       } = req.query;
 
       // Constructing filter object based on provided parameters
       const filter = {};
-     
-     
+
       if (courseName) filter.courseName = courseName;
       if (semester) filter.semester = semester;
       if (programName) filter.programName = programName;
       if (category) filter.category = category;
-      if (exclude==='exclude') {
-        filter.isSold = false;}
-       
-    
+      if (exclude === "exclude") {
+        filter.isSold = false;
+      }
 
       // Constructing price filter based on provided priceRange
       if (priceRange) {
@@ -148,18 +148,17 @@ class ProductController {
   //   }
   // };
 
-  deleteProductById = async(req,res)=>{
-    try{
-       const productId=req.params.id ;
+  deleteProductById = async (req, res) => {
+    try {
+      const productId = req.params.id;
 
-       const product = await ProductModel.findByIdAndDelete(productId) ;
+      const product = await ProductModel.findByIdAndDelete(productId);
 
-         return res.status(200).json({message:"product deleted"});
-    }
-    catch(err){
+      return res.status(200).json({ message: "product deleted" });
+    } catch (err) {
       console.log(err);
       res.status(500).json({ message: "Internal server error" });
     }
-  }
+  };
 }
 export default ProductController;
